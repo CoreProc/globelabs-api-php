@@ -47,7 +47,7 @@ class Sms extends GlobeLabsService
     private $baseUrl = 'http://devapi.globelabs.com.ph/smsmessaging/v1/outbound/{senderAddress}/requests?access_token={access_token}';
 
     /**
-     * @param null $accessToken
+     * @param null $accessToken This is obtained from the user going through the consent flow
      * @param null $mobileNumber is the subscriber MSISDN (mobile number)
      * @param null $message
      * @param null $clientCorrelator
