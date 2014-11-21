@@ -1,5 +1,11 @@
 {
     "require": {
-	"guzzlehttp/guzzle": "~5.0"
+        "guzzlehttp/guzzle": "~5.0",
+        "coreproc/msisdn-ph": "0.1.*"
+    },
+    "autoload": {
+        "psr-4": {
+            "Coreproc\\Globe\\Labs\\": "src"
+        }
     }
 }
