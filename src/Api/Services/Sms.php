@@ -117,7 +117,6 @@ class Sms extends GlobeLabsService
             }
 
         } catch (\GuzzleHttp\Exception\ClientException $e) {
-
             return false;
         }
 
@@ -126,7 +125,7 @@ class Sms extends GlobeLabsService
 
     private function buildUrl()
     {
-        $url = str_replace('{senderAddress}', $this->senderAddress, $this->baseUrl);
+        $url = str_replace('{senderAddress}', substr($this->shortCode, -4), $this->baseUrl);
         $url = str_replace('{access_token}', $this->accessToken, $url);
 
         return $url;

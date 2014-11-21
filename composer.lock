@@ -4,7 +4,7 @@
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "6e894cedcb25355256bbd9dcb8e2c8cc",
+    "hash": "b1b46d6cc9734096a74f67ab29328365",
     "packages": [
         {
             "name": "coreproc/msisdn-ph",
