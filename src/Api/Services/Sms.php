@@ -20,7 +20,7 @@ class Sms extends GlobeLabsService
     private $message = null;
 
     /**
-     * @var mixed
+     * @var string
      */
     private $clientCorrelator = null;
 
@@ -35,6 +35,11 @@ class Sms extends GlobeLabsService
     private $msisdn = null;
 
     /**
+     * @var string
+     */
+    private $senderAddress = null;
+
+    /**
      * Base url of the API
      *
      * @var string
@@ -46,24 +51,36 @@ class Sms extends GlobeLabsService
      * @param null $mobileNumber is the subscriber MSISDN (mobile number)
      * @param null $message
      * @param null $clientCorrelator
+     *
      * @return bool Sent or not
      */
-    public function send($accessToken = null, $mobileNumber = null, $message = null, $clientCorrelator = null)
-    {
-        if ( ! empty($accessToken)) $this->accessToken = $accessToken;
-        if ( ! empty($mobileNumber)) $this->mobileNumber = $mobileNumber;
-        if ( ! empty($message)) $this->message = $message;
-        if ( ! empty($clientCorrelator)) $this->clientCorrelator = $clientCorrelator;
+    public function send($accessToken, $mobileNumber, $message, $clientCorrelator = null, $senderAddress) {
+        if (!empty($accessToken)) {
+            $this->accessToken = $accessToken;
+        }
+        if (!empty($mobileNumber)) {
+            $this->mobileNumber = $mobileNumber;
+        }
+        if (!empty($message)) {
+            $this->message = $message;
+        }
+        if (!empty($clientCorrelator)) {
+            $this->clientCorrelator = $clientCorrelator;
+        }
+
+        if(!empty($senderAddress)) {
+            $this->senderAddress = $senderAddress;
+        }
 
         $this->msisdn = new Msisdn($this->mobileNumber);
-        if ( ! $this->msisdn->isValid()) {
+        if (!$this->msisdn->isValid()) {
             return false;
         }
 
         $data = [
             'outboundSMSMessageRequest' => [
-                'clientCorrelator'       => $this->clientCorrelator,
-                'senderAddress'          => 'tel:' . substr($this->msisdn->get(), -4),
+                'clientCorrelator'       => '' . isset($this->clientCorrelator) ? $this->clientCorrelator : time(),
+                'senderAddress'          => 'tel:' . $this->senderAddress,
                 'outboundSMSTextMessage' => [
                     'message' => $this->message
                 ],
@@ -75,11 +92,9 @@ class Sms extends GlobeLabsService
 
         try {
             $client = new Client();
+
             $response = $client->post($this->buildUrl(), [
-                'body'    => json_encode($data),
-                'headers' => [
-                    'Content-Type' => 'application/json'
-                ]
+                'json' => $data
             ]);
 
             if ($response->getStatusCode() != 201) {
@@ -87,20 +102,15 @@ class Sms extends GlobeLabsService
             }
 
         } catch (\GuzzleHttp\Exception\ClientException $e) {
-            die($e->getMessage());
+
             return false;
         }
 
         return true;
     }
 
-    private function buildUrl()
-    {
-        $mobileNumber = $this->msisdn->get();
-
-        $lastFourDigits = substr($mobileNumber, -4);
-
-        $url = str_replace('{senderAddress}', $lastFourDigits, $this->baseUrl);
+    private function buildUrl() {
+        $url = str_replace('{senderAddress}', $this->senderAddress, $this->baseUrl);
         $url = str_replace('{access_token}', $this->accessToken, $url);
 
         return $url;
