@@ -2,6 +2,7 @@
 
 namespace Coreproc\Globe\Labs\Api;
 
+use Coreproc\Globe\Labs\Api\Services\LocationService;
 use Coreproc\Globe\Labs\Api\Services\SmsService;
 
 class GlobeLabsService
@@ -62,6 +63,16 @@ class GlobeLabsService
         $smsService = new SmsService($this->appId, $this->appSecret);
 
         return $smsService;
+    }
+
+    /**
+     * @return LocationService
+     */
+    public function locationService()
+    {
+        $locationService = new LocationService($this->appId, $this->appSecret);
+
+        return $locationService;
     }
 
 }

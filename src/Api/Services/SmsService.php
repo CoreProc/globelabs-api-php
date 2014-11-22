@@ -87,9 +87,8 @@ class SmsService extends Service
         ];
 
         foreach ($requiredFields as $r) {
-            if (is_null($r)) {
-                // these fields are required
-                return false;
+            if (empty($this->{$r})) {
+                return null;
             }
         }
 
