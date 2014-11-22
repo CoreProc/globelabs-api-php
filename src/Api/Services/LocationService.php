@@ -54,8 +54,6 @@ class LocationService extends Service
             if ($response->getStatusCode() == 200) {
                 $json = $response->json();
 
-                \Log::info(serialize($json));
-
                 $data = $json['terminalLocationList']['terminalLocation'];
 
                 if ($data['locationRetrievalStatus'] == 'Retrieved') {
