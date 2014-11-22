@@ -1,7 +1,23 @@
 {
+    "name": "coreproc/globelabs-api",
+    "description": "PHP library to utilize the Globe Labs API",
+    "keywords": [
+        "api",
+        "globe",
+        "labs",
+        "globe labs"
+    ],
+    "homepage": "https://github.com/chrisbjr/ApiGuard",
+    "authors": [
+        {
+            "name": "Chris Bautista",
+            "email": "chrisbjr@gmail.com"
+        }
+    ],
     "require": {
         "guzzlehttp/guzzle": "~5.0",
-        "coreproc/msisdn-ph": "0.1.*"
+        "coreproc/msisdn-ph": "0.1.*",
+        "nesbot/carbon": "1.13.*"
     },
     "autoload": {
         "psr-4": {

@@ -2,11 +2,12 @@
 
 namespace Coreproc\Globe\Labs\Api\Services;
 
-use Coreproc\Globe\Labs\Api\GlobeLabsService;
+use Carbon\Carbon;
+use Coreproc\Globe\Labs\Api\Classes\Sms;
 use Coreproc\MsisdnPh\Msisdn;
 use GuzzleHttp\Client;
 
-class Sms extends GlobeLabsService
+class SmsService extends Service
 {
 
     /**
@@ -40,6 +41,11 @@ class Sms extends GlobeLabsService
     private $shortCode = null;
 
     /**
+     * @var boolean
+     */
+    private $debug = false;
+
+    /**
      * Base url of the API
      *
      * @var string
@@ -53,7 +59,7 @@ class Sms extends GlobeLabsService
      * @param string $shortCode Your whole short code
      * @param string|int $clientCorrelator
      *
-     * @return bool Sent or not
+     * @return Sms|null SMS object
      */
     public function send($accessToken = null, $mobileNumber = null, $message = null, $shortCode = null, $clientCorrelator = null)
     {
@@ -89,8 +95,14 @@ class Sms extends GlobeLabsService
 
         $this->msisdn = new Msisdn($this->mobileNumber);
         if ( ! $this->msisdn->isValid()) {
-            return false;
+            return null;
         }
+
+        $sms = new Sms();
+        $sms->isSent = false;
+        $sms->reciever = $this->msisdn;
+        $sms->message = $this->message;
+        $sms->createdAt = new Carbon();
 
         $data = [
             'outboundSMSMessageRequest' => [
@@ -113,14 +125,20 @@ class Sms extends GlobeLabsService
             ]);
 
             if ($response->getStatusCode() != 201) {
-                return false;
+                $sms->isSent = true;
+                return $sms;
             }
 
         } catch (\GuzzleHttp\Exception\ClientException $e) {
-            return false;
+
+            if ($this->debug) {
+                die($e->getMessage());
+            }
+
+            return $sms;
         }
 
-        return true;
+        return $sms;
     }
 
     private function buildUrl()
@@ -145,54 +163,6 @@ class Sms extends GlobeLabsService
     public function setAccessToken($accessToken)
     {
         $this->accessToken = $accessToken;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getAppId()
-    {
-        return $this->appId;
-    }
-
-    /**
-     * @param mixed $appId
-     */
-    public function setAppId($appId)
-    {
-        $this->appId = $appId;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getAppSecret()
-    {
-        return $this->appSecret;
-    }
-
-    /**
-     * @param mixed $appSecret
-     */
-    public function setAppSecret($appSecret)
-    {
-        $this->appSecret = $appSecret;
-    }
-
-    /**
-     * @return string
-     */
-    public function getBaseUrl()
-    {
-        return $this->baseUrl;
-    }
-
-    /**
-     * @param string $baseUrl
-     */
-    public function setBaseUrl($baseUrl)
-    {
-        $this->baseUrl = $baseUrl;
     }
 
     /**
@@ -260,19 +230,19 @@ class Sms extends GlobeLabsService
     }
 
     /**
-     * @return string
+     * @return boolean
      */
-    public function getShortCode()
+    public function isDebug()
     {
-        return $this->shortCode;
+        return $this->debug;
     }
 
     /**
-     * @param string $shortCode
+     * @param boolean $debug
      */
-    public function setShortCode($shortCode)
+    public function setDebug($debug)
     {
-        $this->shortCode = $shortCode;
+        $this->debug = $debug;
     }
 
 }

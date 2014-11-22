@@ -2,26 +2,66 @@
 
 namespace Coreproc\Globe\Labs\Api;
 
+use Coreproc\Globe\Labs\Api\Services\SmsService;
+
 class GlobeLabsService
 {
 
-    public $appId;
-    public $appSecret;
+    /**
+     * @var string
+     */
+    private $appId;
 
     /**
-     *
-     * @param $appId
-     * @param $appSecret
+     * @var string
      */
-    public function __construct($appId, $appSecret)
+    private $appSecret;
+
+    public function __construct()
+    {
+        // nothing here yet
+    }
+
+    /**
+     * @return string
+     */
+    public function getAppId()
+    {
+        return $this->appId;
+    }
+
+    /**
+     * @param string $appId
+     */
+    public function setAppId($appId)
     {
         $this->appId = $appId;
+    }
+
+    /**
+     * @return string
+     */
+    public function getAppSecret()
+    {
+        return $this->appSecret;
+    }
+
+    /**
+     * @param string $appSecret
+     */
+    public function setAppSecret($appSecret)
+    {
         $this->appSecret = $appSecret;
     }
 
-    public function call()
+    /**
+     * @return SmsService
+     */
+    public function smsService()
     {
-        // call guzzle given the url
+        $smsService = new SmsService($this->appId, $this->appSecret);
+
+        return $smsService;
     }
 
 }
