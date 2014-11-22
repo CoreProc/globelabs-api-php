@@ -124,7 +124,7 @@ class SmsService extends Service
                 'json' => $data
             ]);
 
-            if ($response->getStatusCode() != 201) {
+            if ($response->getStatusCode() == 201) {
                 $sms->isSent = true;
                 return $sms;
             }
