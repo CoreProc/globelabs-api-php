@@ -8,4 +8,4 @@ use Coreproc\Globe\Labs\Api\Services\SmsService;
 
 $sms = SmsService::recieveSms();
 
-file_put_contents('example/incoming.txt', json_encode($sms));
+file_put_contents(__DIR__ . '/storage/incoming.txt', json_encode($sms));
