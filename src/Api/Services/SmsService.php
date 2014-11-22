@@ -158,17 +158,17 @@ class SmsService extends Service
             return null;
         }
 
-        $inboundSmsMessage = $data['inboundSMSMessageList']['inboundSMSMessage'][0];
+        $inboundSmsMessage = $data->inboundSMSMessageList->inboundSMSMessage[0];
 
         if (empty($inboundSmsMessage)) {
             return null;
         }
 
         $sms = new Sms();
-        $sms->messageId = $inboundSmsMessage['messageId'];
-        $sms->sender = new Msisdn($inboundSmsMessage['senderAddress']);
-        $sms->message = $inboundSmsMessage['message'];
-        $dateTime = strtotime($inboundSmsMessage['dateTime']);
+        $sms->messageId = $inboundSmsMessage->messageId;
+        $sms->sender = new Msisdn($inboundSmsMessage->senderAddress);
+        $sms->message = $inboundSmsMessage->message;
+        $dateTime = strtotime($inboundSmsMessage->dateTime);
         $sms->createdAt = new Carbon($dateTime);
 
         return $sms;
