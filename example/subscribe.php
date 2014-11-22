@@ -26,6 +26,7 @@ $smsService = $globeLabs->smsService();
 
 $smsService->setAccessToken($accessToken);
 $smsService->setMobileNumber($subscriberNumber);
+$smsService->setShortCode('21582328');
 $smsService->setMessage('Test message');
 
 $sms = $smsService->send();

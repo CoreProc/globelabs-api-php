@@ -245,4 +245,20 @@ class SmsService extends Service
         $this->debug = $debug;
     }
 
+    /**
+     * @return string
+     */
+    public function getShortCode()
+    {
+        return $this->shortCode;
+    }
+
+    /**
+     * @param string $shortCode
+     */
+    public function setShortCode($shortCode)
+    {
+        $this->shortCode = $shortCode;
+    }
+
 }
