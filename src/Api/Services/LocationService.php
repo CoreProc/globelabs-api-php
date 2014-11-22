@@ -51,18 +51,20 @@ class LocationService extends Service
 
             $response = $client->get($this->buildUrl());
 
-            if ($response->getStatusCode() == 201) {
-                $json = json_encode($response->getBody());
+            if ($response->getStatusCode() == 200) {
+                $json = $response->json();
 
-                $data = $json->terminalLocationList->terminalLocation;
+                \Log::info(serialize($json));
 
-                if ($data->locationRetrievalStatus == 'Retrieved') {
+                $data = $json['terminalLocationList']['terminalLocation'];
+
+                if ($data['locationRetrievalStatus'] == 'Retrieved') {
                     $location = new Location();
-                    $location->msisdn = new Msisdn(str_replace('tel:', '', $data->address));
-                    $location->latitude = $data->currentLocation->latitude;
-                    $location->latitude = $data->currentLocation->longitude;
-                    $location->mapUrl = $data->currentLocation->map_url;
-                    $location->accuracy = $data->currentLocation->accuracy;
+                    $location->msisdn = new Msisdn(str_replace('tel:', '', $data['address']));
+                    $location->latitude = $data['currentLocation']['latitude'];
+                    $location->latitude = $data['currentLocation']['longitude'];
+                    $location->mapUrl = $data['currentLocation']['map_url'];
+                    $location->accuracy = $data['currentLocation']['accuracy'];
 
                     return $location;
                 }
