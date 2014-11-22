@@ -9,7 +9,7 @@ use GuzzleHttp\Client;
 class LocationService extends Service
 {
 
-    private $baseUrl = 'http://devapi.globelabs.com.ph/location/v1/queries/location?access_token={access_token}&address={address}&requestedAccuracy={metres}';
+    private $baseUrl = 'http://devapi.globelabs.com.ph/location/v1/queries/location';
 
     private $accessToken;
 
