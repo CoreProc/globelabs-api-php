@@ -2,8 +2,8 @@
 
 namespace Coreproc\Globe\Labs\Api\Classes;
 
+use Carbon\Carbon;
 use Coreproc\MsisdnPh\Msisdn;
-use DateTime;
 
 class Sms
 {
@@ -11,7 +11,12 @@ class Sms
     /**
      * @var Msisdn
      */
-    public $reciever;
+    public $destination;
+
+    /**
+     * @var Msisdn
+     */
+    public $sender;
 
     /**
      * @var string

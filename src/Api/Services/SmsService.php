@@ -61,7 +61,7 @@ class SmsService extends Service
      *
      * @return Sms|null SMS object
      */
-    public function send($accessToken = null, $mobileNumber = null, $message = null, $shortCode = null, $clientCorrelator = null)
+    public function sendSms($accessToken = null, $mobileNumber = null, $message = null, $shortCode = null, $clientCorrelator = null)
     {
         if ( ! empty($accessToken)) {
             $this->accessToken = $accessToken;
@@ -100,7 +100,7 @@ class SmsService extends Service
 
         $sms = new Sms();
         $sms->isSent = false;
-        $sms->reciever = $this->msisdn;
+        $sms->destination = $this->msisdn;
         $sms->message = $this->message;
         $sms->createdAt = new Carbon();
 
@@ -139,6 +139,11 @@ class SmsService extends Service
         }
 
         return $sms;
+    }
+
+    public function recieveSms()
+    {
+        $data = json_decode(file_get_contents('php://input'), true);
     }
 
     private function buildUrl()
