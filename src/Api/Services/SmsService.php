@@ -168,8 +168,7 @@ class SmsService extends Service
         $sms->messageId = $inboundSmsMessage->messageId;
         $sms->sender = new Msisdn($inboundSmsMessage->senderAddress);
         $sms->message = $inboundSmsMessage->message;
-        $dateTime = strtotime($inboundSmsMessage->dateTime);
-        $sms->createdAt = new Carbon($dateTime);
+        $sms->createdAt = new Carbon($inboundSmsMessage->dateTime);
 
         return $sms;
     }
