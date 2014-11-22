@@ -9,6 +9,11 @@ class Sms
 {
 
     /**
+     * @var string
+     */
+    public $messageId;
+
+    /**
      * @var Msisdn
      */
     public $destination;

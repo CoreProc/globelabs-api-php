@@ -1,5 +1,9 @@
 <?php
 
-$jsonStringData = file_get_contents('php://input');
+require '../vendor/autoload.php';
 
-file_put_contents('storage/incoming.txt', $jsonStringData . '\n');
+use Coreproc\Globe\Labs\Api\Services\SmsService;
+
+$sms = SmsService::recieveSms();
+
+file_put_contents('example/incoming.txt', json_encode($sms));
