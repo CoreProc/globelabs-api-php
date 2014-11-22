@@ -13,7 +13,7 @@ Create a `composer.json` file and enter the following:
 
     {
         "require": {
-            "coreproc/globe-labs-api": "0.*"
+            "coreproc/globelabs-api": "0.*"
         }
     }
 
