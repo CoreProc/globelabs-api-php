@@ -52,7 +52,7 @@ class LocationService extends Service
             $response = $client->get($this->buildUrl());
 
             if ($response->getStatusCode() == 201) {
-                $json = $response->getBody();
+                $json = json_encode($response->getBody());
 
                 $data = $json->terminalLocationList->terminalLocation;
 
