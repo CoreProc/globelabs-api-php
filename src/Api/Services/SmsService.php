@@ -50,7 +50,7 @@ class SmsService extends Service
      *
      * @var string
      */
-    private $baseUrl = 'http://devapi.globelabs.com.ph/smsmessaging/v1/outbound/{senderAddress}/requests?access_token={access_token}';
+    private $baseUrl = 'https://devapi.globelabs.com.ph/smsmessaging/v1/outbound/{senderAddress}/requests?access_token={access_token}';
 
     /**
      * @param string $accessToken This is obtained from the user going through the consent flow
