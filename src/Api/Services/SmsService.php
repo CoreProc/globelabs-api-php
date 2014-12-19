@@ -6,6 +6,7 @@ use Carbon\Carbon;
 use Coreproc\Globe\Labs\Api\Classes\Sms;
 use Coreproc\MsisdnPh\Msisdn;
 use GuzzleHttp\Client;
+use GuzzleHttp\Exception\ClientException;
 
 class SmsService extends Service
 {
@@ -39,11 +40,6 @@ class SmsService extends Service
      * @var string
      */
     private $shortCode = null;
-
-    /**
-     * @var boolean
-     */
-    private $debug = false;
 
     /**
      * Base url of the API
@@ -128,7 +124,7 @@ class SmsService extends Service
                 return $sms;
             }
 
-        } catch (\GuzzleHttp\Exception\ClientException $e) {
+        } catch (ClientException $e) {
 
             if ($this->debug) {
                 die($e->getMessage());
@@ -136,38 +132,6 @@ class SmsService extends Service
 
             return $sms;
         }
-
-        return $sms;
-    }
-
-    /**
-     * @return null|Sms
-     */
-    public static function recieveSms()
-    {
-        $jsonStringData = file_get_contents('php://input');
-
-        if (empty($jsonStringData)) {
-            return null;
-        }
-
-        $data = json_decode($jsonStringData);
-
-        if (empty($data)) {
-            return null;
-        }
-
-        $inboundSmsMessage = $data->inboundSMSMessageList->inboundSMSMessage[0];
-
-        if (empty($inboundSmsMessage)) {
-            return null;
-        }
-
-        $sms = new Sms();
-        $sms->messageId = $inboundSmsMessage->messageId;
-        $sms->sender = new Msisdn($inboundSmsMessage->senderAddress);
-        $sms->message = $inboundSmsMessage->message;
-        $sms->createdAt = new Carbon($inboundSmsMessage->dateTime);
 
         return $sms;
     }
@@ -258,22 +222,6 @@ class SmsService extends Service
     public function setMsisdn($msisdn)
     {
         $this->msisdn = $msisdn;
-    }
-
-    /**
-     * @return boolean
-     */
-    public function isDebug()
-    {
-        return $this->debug;
-    }
-
-    /**
-     * @param boolean $debug
-     */
-    public function setDebug($debug)
-    {
-        $this->debug = $debug;
     }
 
     /**
