@@ -11,26 +11,26 @@ class SmsReceiver
 
     /**
      * @param $function
-     * @return bool
+     * @return void
      */
     public static function receive($function)
     {
         $jsonStringData = file_get_contents('php://input');
 
         if (empty($jsonStringData)) {
-            return false;
+            return;
         }
 
         $data = json_decode($jsonStringData);
 
         if (empty($data)) {
-            return false;
+            return;
         }
 
         $inboundSmsMessage = $data->inboundSMSMessageList->inboundSMSMessage[0];
 
         if (empty($inboundSmsMessage)) {
-            return false;
+            return;
         }
 
         $sms = new Sms();
@@ -42,8 +42,6 @@ class SmsReceiver
         // ok, now that we have the message, we can parse
 
         $function($sms);
-
-        return true;
     }
 
 }
